@@ -1,4 +1,6 @@
-import Header from "../Header";
+
 export default function IndexPage() {
-  return <div></div>;
+  return <div>
+    Index page here
+  </div>;
 }
