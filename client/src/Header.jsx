@@ -20,7 +20,7 @@ export default function Header() {
         <span className="font-bold text-xl">adventure</span>
       </a>
 
-      <div className="flex gap-2 border border-color-300 rounded-full px-5 py-2 shadow-md shadow-gray-300">
+      <div className="flex gap-2 bordexr border-color-300 rounded-full px-5 py-2 shadow-md shadow-gray-300">
         <div>Anywhere</div>
         <div className="border-l border-gray-300"></div>
         <div>Any weak</div>
