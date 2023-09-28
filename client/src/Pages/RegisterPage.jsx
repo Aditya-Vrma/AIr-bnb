@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  function registerUser() {}
+  function registerUser(ev) {
+    //using axios for request
+    ev.preventDefault();
+    axios.get("http://localhost:4000/test");
+  }
   return (
     <div className="mt-4 grow flex items-center justify-around">
       <div className="mb-64">
@@ -28,7 +33,7 @@ export default function RegisterPage() {
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />
-          <button className="primary">Login</button>
+          <button className="primary">Register</button>
           <div className="text-center py-2 text-gray-500">
             Already have an account?{" "}
             <Link className="underline text-black" to={"/login"}>
