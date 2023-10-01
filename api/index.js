@@ -18,7 +18,7 @@ app.use(
 
 const bcryptsalt = bcrypt.genSaltSync(10); // we can also added await here but we add Sync in genSalt
 
-const jwtSecret = "asfghjkl";
+const jwtSecret = "asfghjkasdfaffdafdsfasdfasdfsdfasl";
 
 //console.log(process.env.MONGO_URL);
 mongoose.connect(process.env.MONGO_URL);
