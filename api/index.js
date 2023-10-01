@@ -37,6 +37,22 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const userDoc = await User.findOne({ email });
+  if (userDoc != null) {
+    // res.json("found");
+    const passOk = bcrypt.compareSync(password, userDoc.password);
+    if (passOk) {
+      res.json("Password correct");
+    } else {
+      res.status(422).json("Password incorrect");
+    }
+  } else {
+    res.json("Not found");
+  }
+});
+
 app.listen(4000, () => {
   console.log("Listening on Port 4000....");
 });
