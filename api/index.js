@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("./models/User.js");
 require("dotenv").config();
+
 const app = express();
 app.use(express.json());
 
@@ -16,7 +18,9 @@ app.use(
 
 const bcryptsalt = bcrypt.genSaltSync(10); // we can also added await here but we add Sync in genSalt
 
-console.log(process.env.MONGO_URL);
+const jwtSecret = "asfghjkl";
+
+//console.log(process.env.MONGO_URL);
 mongoose.connect(process.env.MONGO_URL);
 
 app.get("/test", (req, res) => {
@@ -40,10 +44,20 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const userDoc = await User.findOne({ email });
-  if (userDoc != null) {
+  if (userDoc) {
     // res.json("found");
     const passOk = bcrypt.compareSync(password, userDoc.password);
-    if (passOk) {
+    if (passOk != null) {
+      jwt.sign(
+        { email: userDoc.email, id: userDoc._id },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(userDoc);
+        }
+      );
+
       res.json("Password correct");
     } else {
       res.status(422).json("Password incorrect");
