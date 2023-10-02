@@ -4,11 +4,12 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User.js");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
@@ -57,13 +58,25 @@ app.post("/login", async (req, res) => {
           res.cookie("token", token).json(userDoc);
         }
       );
-
-      res.json("Password correct");
+      // res.json("Password correct");
     } else {
       res.status(422).json("Password incorrect");
     }
   } else {
     res.json("Not found");
+  }
+});
+
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
   }
 });
 
